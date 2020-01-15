@@ -19,7 +19,7 @@ Example use of the API:
 import QuantumEngine as qe
 
 # An example game string
-game_string = ('H1X2Y3')
+game_string = 'H1X2Y3'
 
 # Check if the string represents a valid game
 qe.is_valid_game(game_string, num_players=3)
