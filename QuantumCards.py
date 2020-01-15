@@ -78,7 +78,7 @@ class InputBox:
                 else:
                     self.text += event.unicode.upper()
                 self.txt_surface = FONT.render(self.text, True, self.text_color)
-                
+
         self.color = COLOR_ACTIVE if self.active else COLOR_WHITE
 
     def update(self):
@@ -88,7 +88,7 @@ class InputBox:
     def draw(self, screen):
         screen.blit(self.txt_surface, (self.rect.x+5, self.rect.y+5))
         pg.draw.rect(screen, self.color, self.rect, 2)
-        
+
     def get_text(self):
         return self.text
 
@@ -138,7 +138,7 @@ def SetPlayerToTwo():
         button.reset()
     number_of_players=2;
     GetStartingPlayer()
-            
+
 def SetPlayerToThree():
     global buttons_players, number_of_players
     print('Set player number to three')
@@ -146,7 +146,7 @@ def SetPlayerToThree():
         button.reset()
     number_of_players=3;
     GetStartingPlayer()
-    
+
 def SetPlayerToFour():
     global buttons_players, number_of_players
     print('Set player number to four')
@@ -154,7 +154,7 @@ def SetPlayerToFour():
         button.reset()
     number_of_players=4;
     GetStartingPlayer()
-    
+
 def SetPlayerToFive():
     global buttons_players, number_of_players
     print('Set player number to five')
@@ -162,7 +162,7 @@ def SetPlayerToFive():
         button.reset()
     number_of_players=5;
     GetStartingPlayer()
-    
+
 def GetStartingPlayer():
     global starting_player, check_strings
     check_strings = True
@@ -200,22 +200,22 @@ def ShowHelp():
     global ui_state
     ui_state=2
     print('Show help ui')
-    
+
 def ToggleMusic():
     if pg.mixer.music.get_volume() > 0:
         pg.mixer.music.set_volume(0)
     else:
         pg.mixer.music.set_volume(1)
-        
+
 def main():
     global run_score, starting_player, check_strings, STR1, STR2, STR3
     clock = pg.time.Clock()
-    
+
     game1 = InputBox(250, 292, 1000, 32)
     game2 = InputBox(250, 394, 1000, 32)
     game3 = InputBox(250, 496, 1000, 32)
     input_boxes = [game1, game2, game3]
-    
+
     button_two_p = ButtonBox(62,57,110,27, pg.image.load("GameUI/2players.png"), pg.image.load("GameUI/2players_hover.png"), pg.image.load("GameUI/2players_select.png"), True, SetPlayerToTwo)
     button_three_p = ButtonBox(210,57,110,27, pg.image.load("GameUI/3players.png"), pg.image.load("GameUI/3players_hover.png"), pg.image.load("GameUI/3players_select.png"), True, SetPlayerToThree)
     button_four_p = ButtonBox(358,57,110,27, pg.image.load("GameUI/4players.png"), pg.image.load("GameUI/4players_hover.png"), pg.image.load("GameUI/4players_select.png"), True, SetPlayerToFour)
@@ -234,7 +234,7 @@ def main():
     buttons_calculate = [button_simulate, button_simulate_noisy, button_calculate]
     button_five_p.press_event()
     show_calculation_buttons=True
-    
+
     button_exit_score = ButtonBox(1169,108,78,77, pg.image.load("ScoreUI/reset.png"), pg.image.load("ScoreUI/reset_hover.png"), pg.image.load("ScoreUI/reset.png"), False, ShowGame)
     column1x = 410
     column2x = 600
@@ -246,9 +246,9 @@ def main():
     player4y = 533
     player5y = 634
     victory_order = [0]*5
-    
+
     button_exit_help = ButtonBox(1169,108,78,77, pg.image.load("HelpUI/X.png"), pg.image.load("HelpUI/X_hover.png"), pg.image.load("HelpUI/X.png"), False, ShowGame)
-    
+
     running = True
     while running:
 
@@ -279,7 +279,7 @@ def main():
                 button_exit_help.handle_event(event)
 
         if(ui_state is 0):
-        
+
             for box in input_boxes:
                 box.update()
 
@@ -293,44 +293,44 @@ def main():
 
             for button in buttons:
                 button.draw(screen)
-                
+
             if check_strings:
                 show_calculation_buttons = True
-                if qe.check_game(game1.get_text(),number_of_players):
+                if qe.is_valid_game(game1.get_text(),number_of_players):
                     STR1 = CORRECT_STRING
                 else:
                     STR1 = NOT_CORRECT_STRING
                     show_calculation_buttons = False
-                    
-                if qe.check_game(game2.get_text(),number_of_players):
+
+                if qe.is_valid_game(game2.get_text(),number_of_players):
                     STR2 = CORRECT_STRING
                 else:
                     STR2 = NOT_CORRECT_STRING
                     show_calculation_buttons = False
-                    
-                if qe.check_game(game3.get_text(),number_of_players):
+
+                if qe.is_valid_game(game3.get_text(),number_of_players):
                     STR3 = CORRECT_STRING
                 else:
                     STR3 = NOT_CORRECT_STRING
                     show_calculation_buttons = False
                 check_strings = False
-                
+
             # TODO: Delete 3 lines underneath
             screen.blit(STR1, GAME1_RECT)
             screen.blit(STR2, GAME2_RECT)
             screen.blit(STR3, GAME3_RECT)
-            
+
             if show_calculation_buttons:
                 for button in buttons_calculate:
                     button.draw(screen)
-            
+
             screen.blit(SPEECH_BUBBLE, SPEECH_BUBBLE_RECT)
             starting_player_surface = FONT_BOLD.render("PLAYER " + str(starting_player) + " STARTS", False, COLOR_WHITE)
             screen.blit(starting_player_surface, SPEECH_BUBBLE_TEXT_RECT)
-            
+
         elif ui_state is 1:
             screen.blit(SCORE_BG, BG_RECT)
-            
+
             if run_score is 0:
                 button_exit_score.draw(screen)
 
@@ -339,7 +339,7 @@ def main():
                 #phase2_score = [0,756,34,1000,333]
                 #phase3_score = [0,756,34,1000,333]
                 #victory_order = [1,2,3,4,5]
-                
+
                 text_surf = FONT_BOLD.render(str(phase1_score[0]), False, COLOR_BLUEISH)
                 screen.blit(text_surf, pg.Rect(column1x,player1y,100,100))
                 text_surf = FONT_BOLD.render(str(phase1_score[1]), False, COLOR_BLUEISH)
@@ -350,7 +350,7 @@ def main():
                 screen.blit(text_surf, pg.Rect(column1x,player4y,100,100))
                 text_surf = FONT_BOLD.render(str(phase1_score[4]), False, COLOR_BLUEISH)
                 screen.blit(text_surf, pg.Rect(column1x,player5y,100,100))
-                
+
                 text_surf = FONT_BOLD.render(str(phase2_score[0]), False, COLOR_WHITE)
                 screen.blit(text_surf, pg.Rect(column2x,player1y,100,100))
                 text_surf = FONT_BOLD.render(str(phase2_score[1]), False, COLOR_WHITE)
@@ -361,7 +361,7 @@ def main():
                 screen.blit(text_surf, pg.Rect(column2x,player4y,100,100))
                 text_surf = FONT_BOLD.render(str(phase2_score[4]), False, COLOR_WHITE)
                 screen.blit(text_surf, pg.Rect(column2x,player5y,100,100))
-                
+
                 text_surf = FONT_BOLD.render(str(phase3_score[0]), False, COLOR_BLUEISH)
                 screen.blit(text_surf, pg.Rect(column3x,player1y,100,100))
                 text_surf = FONT_BOLD.render(str(phase3_score[1]), False, COLOR_BLUEISH)
@@ -372,7 +372,7 @@ def main():
                 screen.blit(text_surf, pg.Rect(column3x,player4y,100,100))
                 text_surf = FONT_BOLD.render(str(phase3_score[4]), False, COLOR_BLUEISH)
                 screen.blit(text_surf, pg.Rect(column3x,player5y,100,100))
-                
+
                 text_surf = FONT_BOLD.render(str(victory_order[0]), False, COLOR_WHITE)
                 screen.blit(text_surf, pg.Rect(column4x,player1y,100,100))
                 text_surf = FONT_BOLD.render(str(victory_order[1]), False, COLOR_WHITE)
@@ -386,14 +386,14 @@ def main():
             else:
                 text_surf = FONT_BOLD.render("CALCULATING... PLEASE WAIT.", False, COLOR_WHITE)
                 screen.blit(text_surf, pg.Rect(500,120,100,100))
-                
+
             if number_of_players is 2:
                 screen.blit(HIDE_PLAYERS, pg.Rect(0, 403, 0, 0))
             elif number_of_players is 3:
                 screen.blit(HIDE_PLAYERS, pg.Rect(0, 494, 0, 0))
             elif number_of_players is 4:
                 screen.blit(HIDE_PLAYERS, pg.Rect(0, 592, 0, 0))
-            
+
             if victory_order[0] is 1:
                 screen.blit(VICTORY_DOT, pg.Rect(138,241,0,0))
                 screen.blit(VICTORY_DOT, pg.Rect(1137,241,0,0))
@@ -409,14 +409,14 @@ def main():
             if victory_order[4] is 1:
                 screen.blit(VICTORY_DOT, pg.Rect(138,635,0,0))
                 screen.blit(VICTORY_DOT, pg.Rect(1137,635,0,0))
-            
+
         elif ui_state is 2:
             screen.blit(HELP_BG, BG_RECT)
             button_exit_help.draw(screen)
-            
+
         if ui_state is 1:
             pg.display.flip()
-            if run_score is 1:                
+            if run_score is 1:
                 print('RUN SIMULATION')
                 phase1_score = qe.get_scores(game1.get_text(), number_of_players, True, False)
                 phase2_score = qe.get_scores(game2.get_text(), number_of_players, True, False)
@@ -434,7 +434,7 @@ def main():
                 phase2_score = qe.get_scores(game2.get_text(), number_of_players, False)
                 phase3_score = qe.get_scores(game3.get_text(), number_of_players, False)
                 run_score = 0
-            
+
             total_scores = [phase1_score[i] + phase2_score[i] + phase3_score[i] for i in range(0, 5)]
             different_scores = []
             for score in total_scores:
@@ -443,7 +443,7 @@ def main():
             different_scores.sort(reverse = True)
             for i in range(0, 5):
                 victory_order[i] = different_scores.index(total_scores[i])+1
-            
+
         pg.display.flip()
         clock.tick(60)
 
