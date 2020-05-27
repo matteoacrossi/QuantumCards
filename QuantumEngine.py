@@ -51,7 +51,7 @@ def get_scores(game_str, num_players, simulate=True, noisy=False):
             i += 2
         elif g == "I":
             p = pq[int(game_str[i+1])-1]
-            qc.iden(q[p])
+            qc.i(q[p])
             i += 2
         elif g == "X":
             p = pq[int(game_str[i+1])-1]
