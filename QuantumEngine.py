@@ -51,7 +51,7 @@ def get_scores(game_str, num_players, simulate=True, noisy=False):
             i += 2
         elif g == "I":
             p = pq[int(game_str[i+1])-1]
-            qc.id(q[p])
+            qc.iden(q[p])
             i += 2
         elif g == "X":
             p = pq[int(game_str[i+1])-1]
@@ -152,3 +152,4 @@ def get_ibmq_device():
     provider = IBMQ.get_provider(hub='ibm-q', group='open', project='main')
     device = provider.get_backend('ibmqx2')
     return device
+
